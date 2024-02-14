@@ -1,0 +1,89 @@
+:spring_version: current
+:toc:
+:project_id: gs-rest-service
+:icons: font
+:source-highlighter: prettify
+
+== Content
+
+A service that will accept HTTP GET requests at
+`http://localhost:8080/greeting`.
+
+It will respond with a JSON representation of a greeting, as the following listing shows:
+
+====
+[source,json]
+----
+{"id":1,"content":"Hello, World!"}
+----
+====
+
+You can customize the greeting with an optional `name` parameter in the query string, as
+the following listing shows:
+
+====
+[source,text]
+----
+http://localhost:8080/greeting?name=User
+----
+====
+
+The `name` parameter value overrides the default value of `World` and is reflected in the
+response, as the following listing shows:
+
+====
+[source,json]
+----
+{"id":1,"content":"Hello, User!"}
+----
+====
+
+== Starting with Spring Initializr
+
+Use this https://start.spring.io/#!type=maven-project&groupId=com.example&artifactId=rest-service&name=rest-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.rest-service&dependencies=web[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+
+To manually initialize the project:
+
+. Navigate to https://start.spring.io.
+This service pulls in all the dependencies you need for an application and does most of the setup for you.
+. Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
+. Click *Dependencies* and select *Spring Web*.
+. Click *Generate*.
+. Download the resulting ZIP file, which is an archive of a web application that is configured with your choices.
+
+[[initial]]
+== Run the Service
+
+Run the application by using ./mvnw spring-boot:run. Alternatively, you can build the JAR file with ./mvnw clean package and then run the JAR file, as follows:
+
+java -jar target/gs-rest-service-0.1.0.jar
+
+== Test the Service
+
+Now that the service is up, visit `http://localhost:8080/greeting`, where you should see:
+
+====
+[source,json]
+----
+{"id":1,"content":"Hello, World!"}
+----
+====
+
+Provide a `name` query string parameter by visiting
+`http://localhost:8080/greeting?name=User`. Notice how the value of the `content`
+attribute changes from `Hello, World!` to `Hello, User!`, as the following listing shows:
+
+====
+[source,json]
+----
+{"id":2,"content":"Hello, User!"}
+----
+====
+
+This change demonstrates that the `@RequestParam` arrangement in `GreetingController` is
+working as expected. The `name` parameter has been given a default value of `World` but
+can be explicitly overridden through the query string.
+
+Notice also how the `id` attribute has changed from `1` to `2`. This proves that you are
+working against the same `GreetingController` instance across multiple requests and that
+its `counter` field is being incremented on each call as expected.
